@@ -1,7 +1,24 @@
-all: main
 
-main: main.cpp
-	g++ -o main main.cpp
+CC = g++
+CFLAGS = -Wall -g -I./Coms_parser -I./Socket -I./TCP -I./UDP -I.
+
+SRC_DIRS = Coms_parser Socket TCP UDP ./
+
+SOURCES = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
+OBJECTS = $(SOURCES:%.cpp=%.o)
+
+OBJ_DIR = obj
+TARGET = my_program
+
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) -o $@ $^
+
+$(OBJ_DIR)/%.o: %.cpp
+	mkdir -p $(OBJ_DIR)  # Создание директории, если она отсутствует
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f main
+	rm -rf $(OBJ_DIR)/*.o $(TARGET)

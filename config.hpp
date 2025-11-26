@@ -1,0 +1,4 @@
+#define TCP_PORT 1027
+#define UDP_PORT 1026
+#define MAX_EVENTS 64
+#define BUF_SIZE 1024
