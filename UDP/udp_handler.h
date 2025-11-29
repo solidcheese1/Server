@@ -19,4 +19,5 @@
 #include "../Socket/socket.h"
 
 int create_udp_socket();
-void process_data_udp(int udp_listen_sock, server_state &server);
+int process_data_udp(int udp_listen_sock, int &epoll_fd,  server_state &server, struct epoll_event &ev);
+void clean_send_again();
