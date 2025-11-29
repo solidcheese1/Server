@@ -12,7 +12,8 @@
 #include <arpa/inet.h>
 #include "tcp_handler.h"
 #include "../config.hpp"
-#include "../server_state.hpp"
+#include "../Socket/socket.h"
+#include "../Coms_parser/parse_commands.h"
 #include <iostream>
 #include <map>
 
