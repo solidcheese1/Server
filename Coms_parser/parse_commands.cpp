@@ -2,6 +2,7 @@
 #include "time.h"
 #include <cstring>
 #include <cstdio>
+#include <cstddef>
 
 
 void get_time_str(char *buf, size_t size) {

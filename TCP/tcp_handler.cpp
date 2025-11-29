@@ -13,6 +13,7 @@
 #include "tcp_handler.h"
 #include "../config.hpp"
 #include "../server_state.hpp"
+#include <iostream>
 #include <map>
 
 std::map<int,client_info> Clients;

@@ -2,6 +2,7 @@
 #ifndef SERVER_STATE_HPP
 #define SERVER_STATE_HPP
 #include "config.hpp"
+#include <cstddef>
 struct server_state{
     int sock;
     int connected_clients;
