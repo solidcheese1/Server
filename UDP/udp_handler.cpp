@@ -66,42 +66,45 @@ int process_data_udp(int udp_listen_sock, int &epoll_fd,  server_state &server, 
                 send_again[i] = nullptr;
             }
         }
-    }
-    if(res == 0){
-        send_again.clear();
-    }
-    char buf[BUF_SIZE];
-    char reply[256];
-    struct sockaddr_in client_addr;
-    socklen_t client_len = sizeof(client_addr);
-    ssize_t count = recvfrom(udp_listen_sock, buf, sizeof(buf)-1, 0,
-                                (struct sockaddr*)&client_addr, &client_len);
-    if (count > 0) {
-        buf[count] = 0;
-        if (buf[0] == '/') {
-            parse_command(udp_listen_sock, buf, reply, &server);
-            if(res == 0){
-                socklen_t client_len = sizeof(client_addr);
-                res = send_data(udp_listen_sock, epoll_fd, reply, client_addr, 0);
-                if(res == -2){
-                    clean_send_again();
-                    return -2;
-                }
-            }else{
-                add_to_send_again(reply, client_addr);
-            }
-        } else {
-            if(res == 0){
-                res = send_data(udp_listen_sock, epoll_fd, buf, client_addr, 0);
-                if(res == -2){
-                    clean_send_again();
-                    return -2;
-                }
-            }else{
-                add_to_send_again(buf, client_addr);
-            }
+        if(res == 0){
+            send_again.clear();
         }
     }
+    
+    if(ev.events & EPOLLIN){
+        char buf[BUF_SIZE];
+        char reply[256];
+        struct sockaddr_in client_addr;
+        socklen_t client_len = sizeof(client_addr);
+        ssize_t count = recvfrom(udp_listen_sock, buf, sizeof(buf)-1, 0,
+                                    (struct sockaddr*)&client_addr, &client_len);
+        if (count > 0) {
+            buf[count] = 0;
+            if (buf[0] == '/') {
+                parse_command(udp_listen_sock, buf, reply, &server);
+                if(res == 0){
+                    socklen_t client_len = sizeof(client_addr);
+                    res = send_data(udp_listen_sock, epoll_fd, reply, client_addr, 0);
+                    if(res == -2){
+                        clean_send_again();
+                        return -2;
+                    }
+                }else{
+                    add_to_send_again(reply, client_addr);
+                }
+            } else {
+                if(res == 0){
+                    res = send_data(udp_listen_sock, epoll_fd, buf, client_addr, 0);
+                    if(res == -2){
+                        clean_send_again();
+                        return -2;
+                    }
+                }else{
+                    add_to_send_again(buf, client_addr);
+                }
+            }
+        }
+    }   
     return 0;
 
 };
