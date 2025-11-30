@@ -17,7 +17,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^
 
 $(OBJ_DIR)/%.o: %.cpp
-	mkdir -p $(OBJ_DIR)  # Создание директории, если она отсутствует
+	mkdir -p $(OBJ_DIR)  
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
